@@ -700,7 +700,7 @@ var DEMO_STATES = {
 
 var STAGE_DATA = [
     {
-        number: 1, title: '낱말 카드 모으기', subtitle: '언제·어디서·누구와·무엇을',
+        number: 1, title: '낱말 문장 만들기', subtitle: '카드를 모아 문장을 써요',
         char: '📚',
         bgGradFrom: '#FFE0B8', bgGradTo: '#FFCC85',
         innerBg: '#FFF1E2',
@@ -712,14 +712,14 @@ var STAGE_DATA = [
         shadowClass: 'puffy-shadow-orange'
     },
     {
-        number: 2, title: '문장 만들기', subtitle: '카드로 나만의 문장을 써요',
-        char: '✏️',
+        number: 2, title: '감정 문장 만들기', subtitle: '감정 카드로 마음을 표현해요',
+        char: '💛',
         bgGradFrom: '#DBEAFE', bgGradTo: '#BFDBFE',
         innerBg: '#EFF6FF',
         accentBg: '#3B82F6', accentText: '#1E40AF',
-        sticker1: '📖', sticker3: '🖊️',
+        sticker1: '😊', sticker3: '💬',
         single: true,
-        sub1: '문장 만들러 가기',
+        sub1: '감정 배우러 가기',
         sub2: '',
         shadowClass: 'puffy-shadow-blue'
     },
@@ -822,9 +822,9 @@ function StageCard(props) {
 // ═══════════════════════════════════════════════
 var STAGE_OPTIONS = [
     { key: 's1_1', label: '1단계  낱말 카드 모으기', bg: 'bg-amber-100', text: 'text-amber-700', border: 'border-amber-200', subLabels: {} },
-    { key: 's1_2', label: '1단계  낱말 카드 모으기', bg: 'bg-amber-100', text: 'text-amber-700', border: 'border-amber-200', subLabels: {} },
-    { key: 's2_1', label: '2단계  문장 만들기',       bg: 'bg-blue-100',  text: 'text-blue-700',  border: 'border-blue-200',  subLabels: {} },
-    { key: 's2_2', label: '2단계  문장 만들기',       bg: 'bg-blue-100',  text: 'text-blue-700',  border: 'border-blue-200',  subLabels: {} },
+    { key: 's1_2', label: '1단계  낱말 문장 만들기', bg: 'bg-amber-100', text: 'text-amber-700', border: 'border-amber-200', subLabels: {} },
+    { key: 's2_1', label: '2단계  감정 카드 학습',    bg: 'bg-blue-100',  text: 'text-blue-700',  border: 'border-blue-200',  subLabels: {} },
+    { key: 's2_2', label: '2단계  감정 문장 만들기',  bg: 'bg-blue-100',  text: 'text-blue-700',  border: 'border-blue-200',  subLabels: {} },
     { key: 's3',   label: '3단계  일기쓰기',          bg: 'bg-emerald-100', text: 'text-emerald-700', border: 'border-emerald-200', subLabels: {} }
 ];
 
@@ -1191,14 +1191,14 @@ function StageHeader(props) {
     // 단계→화면키 매핑
     function stageToKey(n) {
         if (n === '1') return 's1_1';
-        if (n === '2') return 's1_2';
+        if (n === '2') return 's2_1';
         if (n === '3') return 's3';
         return 's1_1';
     }
 
     var STAGE_LABELS = [
-        { num: '1', label: '1단계  낱말 카드 모으기', cls: 'bg-amber-100 text-amber-700 border-amber-300' },
-        { num: '2', label: '2단계  문장 만들기',       cls: 'bg-blue-100 text-blue-700 border-blue-300'   },
+        { num: '1', label: '1단계  낱말 문장 만들기', cls: 'bg-amber-100 text-amber-700 border-amber-300' },
+        { num: '2', label: '2단계  감정 문장 만들기',  cls: 'bg-blue-100 text-blue-700 border-blue-300'   },
         { num: '3', label: '3단계  일기쓰기',          cls: 'bg-emerald-100 text-emerald-700 border-emerald-300' }
     ];
     var currentStageLabel = STAGE_LABELS.filter(function(s){ return s.num === stageNum; })[0] || STAGE_LABELS[0];
@@ -1343,9 +1343,9 @@ function MainMenu(props) {
         // 1단계: 낱말 카드 모으기
         { sub1Done: stage1Sub1Done, sub2Done: false, sub2Locked: false, sub2LockReason: '', stageLocked: false, stageLockReason: '',
           sub1Count: state.cards1, sub1Total: total1, sub2Count: 0, sub2Total: 1 },
-        // 2단계: 문장 만들기
-        { sub1Done: stage1Sub2Done, sub2Done: false, sub2Locked: false, sub2LockReason: '', stageLocked: LOCK_SETTINGS.lock_stage1_2, stageLockReason: LOCK_SETTINGS.lock_stage1_2 ? '선생님이 아직 잠가 놨어요 🔒' : '',
-          sub1Count: state.did1_2 ? 1 : 0, sub1Total: 1, sub2Count: 0, sub2Total: 1 },
+        // 2단계: 감정 문장 만들기
+        { sub1Done: !!state.did2_2, sub2Done: false, sub2Locked: false, sub2LockReason: '', stageLocked: LOCK_SETTINGS.lock_stage2_1, stageLockReason: LOCK_SETTINGS.lock_stage2_1 ? '선생님이 아직 잠가 놨어요 🔒' : '',
+          sub1Count: state.did2_2 ? 1 : 0, sub1Total: 1, sub2Count: 0, sub2Total: 1 },
         // 3단계: 일기쓰기
         { sub1Done: false, sub2Done: false, sub2Locked: false, sub2LockReason: '', stageLocked: stage3Locked, stageLockReason: stage3LockReason,
           sub1Count: 0, sub1Total: 1, sub2Count: 0, sub2Total: 1 }
@@ -8055,10 +8055,10 @@ function App() {
             progress: progress,
             lockVer: lockVer,
             onNavigate: function(stageNum, sub) {
-                // 화면 키 결정
+                // 화면 키 결정 (1단계=낱말, 2단계=감정, 3단계=일기)
                 var sc;
-                if      (stageNum === '1') sc = 's1_1';
-                else if (stageNum === '2') sc = 's1_2';
+                if      (stageNum === '1') sc = (sub === '2') ? 's1_2' : 's1_1';
+                else if (stageNum === '2') sc = (sub === '2') ? 's2_2' : 's2_1';
                 else if (stageNum === '3') sc = 's3';
                 if (sc) goTo(sc);
             },
@@ -8129,6 +8129,65 @@ function App() {
             cards1: progress.cards1,
             collectedCards: progress.cards1List || [],
             previousSentence: progress.sentence1
+        });
+
+    } else if (screen === 's2_1') {
+        // 2단계 ❶ 감정 카드 학습
+        content = h(Stage2_1, {
+            onBack: goMenu,
+            onChangeStage: function(key) { goTo(key); },
+            collectedCards: progress.cards2List || [],
+            onComplete: function(newCards) {
+                var existing = progress.cards2List || [];
+                var incoming = Array.isArray(newCards) ? newCards : [];
+                var addedCards = [];
+                incoming.forEach(function(nc) {
+                    var dup = false;
+                    for (var i = 0; i < existing.length; i++) {
+                        if (existing[i].value === nc.value) { dup = true; break; }
+                    }
+                    if (!dup) addedCards.push(nc);
+                });
+                if (addedCards.length > 0) {
+                    try {
+                        gasPost({
+                            type: 'saveCard',
+                            studentId: student ? student.id : '',
+                            studentName: student ? student.name : '',
+                            stage: '2단계❶',
+                            cards: addedCards
+                        }).catch(function(){});
+                    } catch(e) {}
+                }
+                var merged = existing.concat(addedCards);
+                updateProgress({ cards2: merged.length, cards2List: merged });
+                goMenu();
+            }
+        });
+
+    } else if (screen === 's2_2') {
+        // 2단계 ❷ 감정 문장 만들기
+        content = h(Stage2_2, {
+            onBack: goMenu,
+            onChangeStage: function(key) { goTo(key); },
+            collectedCards: progress.cards2List || [],
+            previousSentence: progress.sentence2,
+            onComplete: function(result) {
+                var feelings = (result && result.feelings) ? result.feelings : [];
+                var reason = (result && result.reason) ? result.reason : '';
+                try {
+                    gasPost({
+                        type: 'saveSentence',
+                        studentId: student ? student.id : '',
+                        studentName: student ? student.name : '',
+                        stage: '2단계❷',
+                        feelings: feelings,
+                        reason: reason
+                    }).catch(function(){});
+                } catch(e) {}
+                updateProgress({ did2_2: true, feelings2: feelings, reason2: reason });
+                goMenu();
+            }
         });
 
     } else if (screen === 's3') {
