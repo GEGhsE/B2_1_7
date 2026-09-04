@@ -6773,7 +6773,8 @@ function Stage3(props) {
         }
         setTimeout(function() {
             setSubmitted(true);
-            // 선생님께 자동 전송된 뒤 5초 후에 10칸 공책 쓰기 화면을 보여줌
+            setSubStep('done');
+            // '일기를 완성했어요!' 화면을 5초 보여준 뒤 10칸 공책 쓰기 화면으로 전환
             setTimeout(function() { setSubStep('write'); }, 5000);
         }, 1800);
     }
